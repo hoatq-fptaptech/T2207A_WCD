@@ -12,7 +12,7 @@ public class Database {
     private static Database _instance;
     private Database() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(connectionString,user,password);
         }catch (Exception e){
             System.out.println(e.getMessage());
