@@ -1,4 +1,5 @@
-<%--
+<%@ page import="com.entities.Student" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: quanghoatrinh
   Date: 22/01/2024
@@ -15,7 +16,27 @@
     <jsp:include page="/layout/header.jsp"/>
     <div class="container">
         <h1>List Student Demo</h1>
+        <!--  Table students -->
+        <table class="table">
+            <thead>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Address</th>
+            </thead>
+            <tbody>
+                <% for (Student s : (List<Student>)request.getAttribute("students")){ %>
+                    <tr>
+                        <td><%= s.id  %></td>
+                        <td><%= s.name  %></td>
+                        <td><%= s.email  %></td>
+                        <td><%= s.address  %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
     </div>
-    <!--  Table students -->
+
+
 </body>
 </html>
