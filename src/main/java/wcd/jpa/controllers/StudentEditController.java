@@ -11,14 +11,13 @@ import org.hibernate.cfg.Configuration;
 import wcd.jpa.entities.Student;
 
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet(value = "/list-student")
-public class StudentController extends HttpServlet {
+@WebServlet(value = "/edit-student")
+public class StudentEditController extends HttpServlet {
     private SessionFactory sessionFactory;
     @Override
     public void init() throws ServletException {
-        try{
+        try {
             sessionFactory = new Configuration()
                     .configure("hibernate.cfg.xml").buildSessionFactory();
         }catch (Exception e){
@@ -27,35 +26,40 @@ public class StudentController extends HttpServlet {
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try (Session session = sessionFactory.openSession()) {
+        String entityId = req.getParameter("id");
+        try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            List<Student> list = session.createQuery("FROM Student",Student.class)
-                    .getResultList();
+            Student student = session.get(Student.class,Integer.parseInt(entityId));
             session.getTransaction().commit();
-            req.setAttribute("students",list);
+            if(student != null) {
+                req.setAttribute("student", student);
+                req.getRequestDispatcher("student/edit.jsp").forward(req, resp);
+            }else
+                resp.setStatus(404);
+        }catch (Exception e){
+            resp.setStatus(404);
         }
-        req.getRequestDispatcher("student/list.jsp").forward(req,resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        this.doGet(req,resp);
-    }
-
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String entityId = req.getParameter("id");
-        try (Session session = sessionFactory.openSession()) {
+        try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Student student = session.get(Student.class, Integer.parseInt(entityId));
-            if (student != null) {
-                session.delete(student);
+            Student student = session.get(Student.class,Integer.parseInt(entityId));
+            if(student != null) {
+                student.setName(req.getParameter("name"));
+                student.setEmail(req.getParameter("email"));
+                student.setAddress(req.getParameter("address"));
+                // update to DB
+                session.update(student);
             }
             session.getTransaction().commit();
-            resp.setStatus(200);
-            return;
+            resp.sendRedirect("list-student");
         }catch (Exception e){
-            resp.setStatus(403);
+            resp.setStatus(500);
         }
     }
+
+
 }

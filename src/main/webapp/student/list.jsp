@@ -16,6 +16,7 @@
     <jsp:include page="/layout/header.jsp"/>
     <div class="container">
         <h1>List Student Demo</h1>
+        <a href="create-student">Create</a>
         <!--  Table students -->
         <table class="table">
             <thead>
@@ -23,6 +24,8 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Address</th>
+                <th></th>
+                <th></th>
             </thead>
             <tbody>
                 <% for (Student s : (List<Student>)request.getAttribute("students")){ %>
@@ -31,12 +34,26 @@
                         <td><%= s.name  %></td>
                         <td><%= s.email  %></td>
                         <td><%= s.address  %></td>
+                        <td><a href="edit-student?id=<%= s.getId() %>">Edit</a> </td>
+                        <td><a class="text-danger" onclick="deleteStudent(<%= s.getId() %>)" href="javascript:void(0);">Delete</a> </td>
                     </tr>
                 <% } %>
             </tbody>
         </table>
     </div>
-
-
+<script type="text/javascript">
+    function deleteStudent(id) {
+        var url = `list-student?id=`+id;
+        fetch(url,{
+            method: 'DELETE'
+            // body: formData
+        }).then(rs=>{
+            if(confirm("Reload page?"))
+                window.location.reload();
+        }).error(err=>{
+            alert(err)
+        })
+    }
+</script>
 </body>
 </html>

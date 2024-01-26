@@ -1,4 +1,4 @@
-<%--
+<%@ page import="wcd.jpa.entities.Student" %><%--
   Created by IntelliJ IDEA.
   User: quanghoatrinh
   Date: 22/01/2024
@@ -18,19 +18,20 @@
         <!--  Table students -->
         <div class="row">
             <div class="col-6">
-                <form method="post" action="create-student">
+                <% Student student = (Student)request.getAttribute("student"); %>
+                <form method="post" action="edit-student?id=<%= student.getId() %>">
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Full name</label>
-                        <input type="text" name="name" class="form-control" aria-describedby="emailHelp"/>
+                        <input type="text" value="<%= student.getName() %>" name="name" class="form-control" aria-describedby="emailHelp"/>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Email address</label>
-                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <input type="email" value="<%= student.getEmail() %>" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Address</label>
-                        <input type="text" name="address" class="form-control" aria-describedby="emailHelp"/>
+                        <input type="text" name="address" value="<%= student.getAddress() %>" class="form-control" aria-describedby="emailHelp"/>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
