@@ -43,16 +43,18 @@
     </div>
 <script type="text/javascript">
     function deleteStudent(id) {
-        var url = `list-student?id=`+id;
-        fetch(url,{
-            method: 'DELETE'
-            // body: formData
-        }).then(rs=>{
-            if(confirm("Reload page?"))
-                window.location.reload();
-        }).error(err=>{
-            alert(err)
-        })
+        if(confirm("Are you sure?")) {
+            var url = `list-student?id=` + id;
+            fetch(url, {
+                method: 'DELETE'
+                // body: formData
+            }).then(rs => {
+                if (confirm("Delete successfully! Reload page?"))
+                    window.location.reload();
+            }).error(err => {
+                alert(err)
+            })
+        }
     }
 </script>
 </body>
