@@ -14,6 +14,7 @@
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <!-- update or re-create db schema -->
 <!--        <property name="hibernate.hbm2ddl.auto">update</property>-->
+        <mapping class="wcd.jpa.entities.Classes"/>
         <mapping class="wcd.jpa.entities.Student"/>
     </session-factory>
 </hibernate-configuration>
